@@ -1,10 +1,10 @@
 class LoggerMessages:
     # --- Tags ---
-    TAG_ZMQ_SERVER = "[ZMQ_SERVER]"
-    TAG_ZMQ_CONTROLLER = "[ZMQ_CONTROLLER]"
-    TAG_ZMQ_CLIENT = "[ZMQ_CLIENT]"
-    TAG_KAFKA = "[KAFKA]"
-    TAG_CONFIG = "[CONFIG]"
+    TAG_ZMQ_SERVER = "[🛰️ ZMQ_SERVER]"
+    TAG_ZMQ_CLIENT = "[📡 ZMQ_CLIENT]"
+    TAG_ZMQ_CONTROLLER = "[🧠 ZMQ_CONTROLLER]"
+    TAG_KAFKA = "[📦 KAFKA]"
+    TAG_CONFIG = "[⚙️ CONFIG]"
 
     # Generic
     DEFAULT_ERROR = "ERROR"
