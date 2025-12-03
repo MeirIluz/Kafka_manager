@@ -68,10 +68,23 @@ class ExampleManager(IExampleManager):
             )
 
     def _print_consumer(self, topic: str, msg: str) -> None:
-        colored_topic = f"{ConstColors.CYAN}[{topic}]{ConstColors.RESET}"
-        colored_msg = f"{ConstColors.GREEN}{LoggerMessages.EXAMPLE_PRINT_CONSUMER_MSG.format(msg)}{ConstColors.RESET}"
+        TOPIC_COLORS = {
+            ConstStrings.EXAMPLE_TOPIC: ConstColors.CYAN,
+            ConstStrings.ANOTHER_TOPIC: ConstColors.MAGENTA,
+            ConstStrings.BROADCAST_TOPIC: ConstColors.YELLOW if hasattr(ConstStrings, "BROADCAST_TOPIC") else ConstColors.BLUE,
+        }
+
+        topic_color = TOPIC_COLORS.get(topic, ConstColors.CYAN)
+
+        colored_topic = f"{topic_color}[{topic}]{ConstColors.RESET}"
+        colored_msg = (
+            f"{ConstColors.GREEN}"
+            f"{LoggerMessages.EXAMPLE_PRINT_CONSUMER_MSG.format(msg)}"
+            f"{ConstColors.RESET}"
+        )
 
         self._logger.log(
             ConstStrings.LOG_NAME_DEBUG,
             f"{colored_topic} {colored_msg}"
         )
+
