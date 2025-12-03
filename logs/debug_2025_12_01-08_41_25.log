@@ -1,0 +1,16 @@
+2025-12-01 08:41:25,717 - DEBUG - xmlconfig: key 'example_topic' not found.
+2025-12-01 08:41:25,718 - DEBUG - xmlconfig: no close matches found.
+2025-12-01 08:41:25,718 - DEBUG - Topic Not Exist
+2025-12-01 08:41:25,719 - DEBUG - ZMQ REP server bound to tcp://127.0.0.1:5555
+2025-12-01 08:41:26,717 - DEBUG - xmlconfig: key 'example_topic' not found.
+2025-12-01 08:41:26,718 - DEBUG - xmlconfig: no close matches found.
+2025-12-01 08:41:27,718 - DEBUG - xmlconfig: key 'example_topic' not found.
+2025-12-01 08:41:27,719 - DEBUG - xmlconfig: no close matches found.
+2025-12-01 08:41:28,720 - DEBUG - xmlconfig: key 'example_topic' not found.
+2025-12-01 08:41:28,721 - DEBUG - xmlconfig: no close matches found.
+2025-12-01 08:41:29,721 - DEBUG - xmlconfig: key 'example_topic' not found.
+2025-12-01 08:41:29,722 - DEBUG - xmlconfig: no close matches found.
+2025-12-01 08:41:30,723 - DEBUG - xmlconfig: key 'example_topic' not found.
+2025-12-01 08:41:30,724 - DEBUG - xmlconfig: no close matches found.
+2025-12-01 08:41:31,725 - DEBUG - xmlconfig: key 'example_topic' not found.
+2025-12-01 08:41:31,725 - DEBUG - xmlconfig: no close matches found.

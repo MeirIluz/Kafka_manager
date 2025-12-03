@@ -1,0 +1,6 @@
+2025-12-02 16:04:03,321 - DEBUG - ZMQ REP server bound to tcp://127.0.0.1:5555
+2025-12-02 16:04:04,334 - DEBUG - [example_topic] , message is: example_message
+2025-12-02 16:04:05,338 - DEBUG - [example_topic] , message is: example_message
+2025-12-02 16:04:06,345 - DEBUG - [example_topic] , message is: example_message
+2025-12-02 16:04:07,351 - DEBUG - [example_topic] , message is: example_message
+2025-12-02 16:04:08,356 - DEBUG - [example_topic] , message is: example_message

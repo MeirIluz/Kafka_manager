@@ -1,0 +1,9 @@
+2025-12-01 08:33:11,359 - DEBUG - ZMQ REP server bound to tcp://127.0.0.1:5555
+2025-12-01 08:33:11,482 - DEBUG - , message is: ManagerFactory initialized
+2025-12-01 08:33:12,252 - DEBUG - , message is: example_message
+2025-12-01 08:33:13,258 - DEBUG - , message is: example_message
+2025-12-01 08:33:14,265 - DEBUG - , message is: example_message
+2025-12-01 08:33:15,272 - DEBUG - , message is: example_message
+2025-12-01 08:33:16,277 - DEBUG - , message is: example_message
+2025-12-01 08:33:17,276 - DEBUG - , message is: example_message
+2025-12-01 08:33:18,286 - DEBUG - , message is: example_message

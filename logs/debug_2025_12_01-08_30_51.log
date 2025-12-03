@@ -1,0 +1,13 @@
+2025-12-01 08:30:51,722 - DEBUG - ZMQ REP server bound to tcp://127.0.0.1:5555
+2025-12-01 08:30:52,724 - DEBUG - , message is: example_message
+2025-12-01 08:30:53,735 - DEBUG - , message is: example_message
+2025-12-01 08:30:54,742 - DEBUG - , message is: example_message
+2025-12-01 08:30:55,748 - DEBUG - , message is: example_message
+2025-12-01 08:30:56,756 - DEBUG - , message is: example_message
+2025-12-01 08:30:57,762 - DEBUG - , message is: example_message
+2025-12-01 08:30:58,769 - DEBUG - , message is: example_message
+2025-12-01 08:30:59,773 - DEBUG - , message is: example_message
+2025-12-01 08:31:00,780 - DEBUG - , message is: example_message
+2025-12-01 08:31:01,779 - DEBUG - , message is: example_message
+2025-12-01 08:31:02,787 - DEBUG - , message is: example_message
+2025-12-01 08:31:03,794 - DEBUG - , message is: example_message

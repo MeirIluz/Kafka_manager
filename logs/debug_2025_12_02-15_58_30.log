@@ -1,0 +1,4 @@
+2025-12-02 15:58:30,288 - DEBUG - [example_topic] , message is: example_message
+2025-12-02 15:58:31,289 - DEBUG - [example_topic] , message is: example_message
+2025-12-02 15:58:32,292 - DEBUG - [example_topic] , message is: example_message
+2025-12-02 15:58:33,293 - DEBUG - [example_topic] , message is: example_message
