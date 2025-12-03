@@ -1,8 +1,8 @@
 import os
 import time
 import threading
-import json
-import zmq 
+
+import zmq
 
 from infrastructure.interfaces.iexample_manager import IExampleManager
 from infrastructure.interfaces.iconfig_manager import IConfigManager
@@ -15,7 +15,17 @@ from infrastructure.factories.logger_factory import LoggerFactory
 
 
 class ExampleManager(IExampleManager):
-    def __init__(self, config_manager: IConfigManager, kafka_manager: IKafkaManager) -> None:
+    _TAG_ZMQ_CLIENT = LoggerMessages.TAG_ZMQ_CLIENT
+    _TAG_ZMQ_CLIENT_COLOR = ConstColors.CYAN
+
+    _TAG_KAFKA = LoggerMessages.TAG_KAFKA
+    _TAG_KAFKA_COLOR = ConstColors.MAGENTA
+
+    def __init__(
+        self,
+        config_manager: IConfigManager,
+        kafka_manager: IKafkaManager,
+    ) -> None:
         super().__init__()
         self._config_manager = config_manager
         self._kafka_manager = kafka_manager
@@ -23,51 +33,57 @@ class ExampleManager(IExampleManager):
         self._topic2 = ConstStrings.ANOTHER_TOPIC
 
         self._logger = LoggerFactory.get_logger_manager()
+
         self._init_threading()
         self._init_consumers()
         self._init_zmq_test_client()
 
+    def _format_tagged(self, tag: str, color: str, msg: str) -> str:
+        """Prepends a colored [TAG] to the message."""
+        return f"{color}{tag}{ConstColors.RESET} {msg}"
+
     def do_something(self) -> None:
         self._kafka_manager.send_message(
-            self._topic1, "Manual do_something message")
+            self._topic1,
+            "Manual do_something message",
+        )
 
     def _init_threading(self) -> None:
         self._producer_thread_1 = threading.Thread(
-            target=self._produce_topic1_messages
+            target=self._produce_topic1_messages,
         )
         self._producer_thread_1.start()
 
         self._producer_thread_2 = threading.Thread(
-            target=self._produce_topic2_messages
+            target=self._produce_topic2_messages,
         )
         self._producer_thread_2.start()
 
     def _init_consumers(self) -> None:
-
         self._kafka_manager.start_consuming(
             self._topic1,
-            self._print_consumer
+            self._print_consumer,
         )
 
         self._kafka_manager.start_consuming(
             self._topic2,
-            self._print_consumer
+            self._print_consumer,
         )
 
     def _produce_topic1_messages(self) -> None:
-        while (True):
+        while True:
             time.sleep(Consts.SEND_MESSAGE_DURATION)
             self._kafka_manager.send_message(
                 self._topic1,
-                ConstStrings.EXAMPLE_MESSAGE
+                ConstStrings.EXAMPLE_MESSAGE,
             )
 
     def _produce_topic2_messages(self) -> None:
-        while (True):
+        while True:
             time.sleep(Consts.SEND_MESSAGE_DURATION * 2)
             self._kafka_manager.send_message(
                 self._topic2,
-                ConstStrings.ANOTHER_MESSAGE
+                ConstStrings.ANOTHER_MESSAGE,
             )
 
     def _print_consumer(self, topic: str, msg: str) -> None:
@@ -85,9 +101,15 @@ class ExampleManager(IExampleManager):
             f"{ConstColors.RESET}"
         )
 
+        kafka_line = f"{colored_topic} {colored_msg}"
+
         self._logger.log(
             ConstStrings.LOG_NAME_DEBUG,
-            f"{colored_topic} {colored_msg}"
+            self._format_tagged(
+                self._TAG_KAFKA,
+                self._TAG_KAFKA_COLOR,
+                kafka_line,
+            ),
         )
 
     def _init_zmq_test_client(self) -> None:
@@ -98,14 +120,15 @@ class ExampleManager(IExampleManager):
         self._zmq_client_thread.start()
 
     def _create_zmq_socket(self, context: zmq.Context) -> zmq.Socket:
-            host = os.getenv(ConstStrings.ZMQ_SERVER_HOST, "127.0.0.1")
-            port = os.getenv(ConstStrings.ZMQ_SERVER_PORT, "5555")
+        host = os.getenv(ConstStrings.ZMQ_SERVER_HOST, "127.0.0.1")
+        port = os.getenv(ConstStrings.ZMQ_SERVER_PORT, "5555")
 
-            socket = context.socket(zmq.REQ)
-            socket.connect(f"tcp://{host}:{port}")
-            socket.RCVTIMEO = 2000
-            socket.SNDTIMEO = 2000
-            return socket
+        socket = context.socket(zmq.REQ)
+        socket.connect(
+            f"{ConstStrings.BASE_TCP_CONNECTION_STRINGS}{host}:{port}")
+        socket.RCVTIMEO = 2000
+        socket.SNDTIMEO = 2000
+        return socket
 
     def _send_zmq_test_messages(self) -> None:
         context = zmq.Context.instance()
@@ -113,10 +136,21 @@ class ExampleManager(IExampleManager):
 
         counter = 0
         while True:
-            time.sleep(5)
+            time.sleep(1)
 
             message_text = f"Hello from internal ZMQ client #{counter}"
             counter += 1
+
+            # log generated test message
+            self._logger.log(
+                ConstStrings.LOG_NAME_DEBUG,
+                self._format_tagged(
+                    self._TAG_ZMQ_CLIENT,
+                    self._TAG_ZMQ_CLIENT_COLOR,
+                    LoggerMessages.ZMQ_CLIENT_GENERATED_MESSAGE.format(
+                        message_text),
+                ),
+            )
 
             request = {
                 ConstStrings.RESOURCE_IDENTIFIER: ConstStrings.EXAMPLE_RESOURCE,
@@ -124,13 +158,19 @@ class ExampleManager(IExampleManager):
                 ConstStrings.DATA_IDENTIFIER: {
                     "topic": ConstStrings.EXAMPLE_TOPIC,
                     "message": message_text,
-                }
+                },
             }
 
             try:
+                # log sending
                 self._logger.log(
                     ConstStrings.LOG_NAME_DEBUG,
-                    f"Sending ZMQ request: {request}"
+                    self._format_tagged(
+                        self._TAG_ZMQ_CLIENT,
+                        self._TAG_ZMQ_CLIENT_COLOR,
+                        LoggerMessages.ZMQ_CLIENT_SENDING_REQUEST.format(
+                            request),
+                    ),
                 )
                 socket.send_json(request)
 
@@ -138,12 +178,22 @@ class ExampleManager(IExampleManager):
                     response = socket.recv_json()
                     self._logger.log(
                         ConstStrings.LOG_NAME_DEBUG,
-                        f"Received ZMQ response: {response}"
+                        self._format_tagged(
+                            self._TAG_ZMQ_CLIENT,
+                            self._TAG_ZMQ_CLIENT_COLOR,
+                            LoggerMessages.ZMQ_CLIENT_RECEIVED_RESPONSE.format(
+                                response
+                            ),
+                        ),
                     )
                 except zmq.Again:
                     self._logger.log(
                         ConstStrings.LOG_NAME_DEBUG,
-                        "ZMQ client: recv timeout, no reply from server"
+                        self._format_tagged(
+                            self._TAG_ZMQ_CLIENT,
+                            self._TAG_ZMQ_CLIENT_COLOR,
+                            LoggerMessages.ZMQ_CLIENT_RECV_TIMEOUT,
+                        ),
                     )
                     socket.close(0)
                     socket = self._create_zmq_socket(context)
@@ -151,9 +201,12 @@ class ExampleManager(IExampleManager):
             except zmq.ZMQError as e:
                 self._logger.log(
                     ConstStrings.LOG_NAME_DEBUG,
-                    f"ZMQ client thread error: {e}"
+                    self._format_tagged(
+                        self._TAG_ZMQ_CLIENT,
+                        self._TAG_ZMQ_CLIENT_COLOR,
+                        LoggerMessages.ZMQ_CLIENT_THREAD_ERROR.format(e),
+                    ),
                 )
-
                 try:
                     socket.close(0)
                 except Exception:
