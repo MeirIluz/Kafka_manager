@@ -96,35 +96,38 @@ class ExampleManager(IExampleManager):
         )
         self._zmq_client_thread.start()
 
-    def _send_zmq_test_messages(self) -> None:
-        context = zmq.Context.instance()
+    def _create_zmq_socket(self, context: zmq.Context) -> zmq.Socket:
         socket = context.socket(zmq.REQ)
         socket.connect("tcp://127.0.0.1:5555")
-
         socket.RCVTIMEO = 2000
+        socket.SNDTIMEO = 2000
+        return socket
+
+    def _send_zmq_test_messages(self) -> None:
+        context = zmq.Context.instance()
+        socket = self._create_zmq_socket(context)
 
         counter = 0
         while True:
-            try:
-                time.sleep(1) 
+            time.sleep(1)
 
-                message_text = f"Hello from internal ZMQ client #{counter}"
-                counter += 1
+            message_text = f"Hello from internal ZMQ client #{counter}"
+            counter += 1
 
-                request = {
-                    ConstStrings.RESOURCE_IDENTIFIER: ConstStrings.EXAMPLE_RESOURCE,
-                    ConstStrings.OPERATION_IDENTIFIER: ConstStrings.EXAMPLE_OPERATION,
-                    ConstStrings.DATA_IDENTIFIER: {
-                        "topic": ConstStrings.EXAMPLE_TOPIC,
-                        "message": message_text,
-                    }
+            request = {
+                ConstStrings.RESOURCE_IDENTIFIER: ConstStrings.EXAMPLE_RESOURCE,
+                ConstStrings.OPERATION_IDENTIFIER: ConstStrings.EXAMPLE_OPERATION,
+                ConstStrings.DATA_IDENTIFIER: {
+                    "topic": ConstStrings.EXAMPLE_TOPIC,
+                    "message": message_text,
                 }
+            }
 
+            try:
                 self._logger.log(
                     ConstStrings.LOG_NAME_DEBUG,
                     f"Sending ZMQ request: {request}"
                 )
-
                 socket.send_json(request)
 
                 try:
@@ -138,9 +141,17 @@ class ExampleManager(IExampleManager):
                         ConstStrings.LOG_NAME_DEBUG,
                         "ZMQ client: recv timeout, no reply from server"
                     )
+                    socket.close(0)
+                    socket = self._create_zmq_socket(context)
 
-            except Exception as e:
+            except zmq.ZMQError as e:
                 self._logger.log(
                     ConstStrings.LOG_NAME_DEBUG,
                     f"ZMQ client thread error: {e}"
                 )
+                # recreate socket on any ZMQ error
+                try:
+                    socket.close(0)
+                except Exception:
+                    pass
+                socket = self._create_zmq_socket(context)
