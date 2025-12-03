@@ -1,6 +1,7 @@
 import time
 import threading
 import json
+import zmq 
 
 from infrastructure.interfaces.iexample_manager import IExampleManager
 from infrastructure.interfaces.iconfig_manager import IConfigManager
@@ -23,6 +24,7 @@ class ExampleManager(IExampleManager):
         self._logger = LoggerFactory.get_logger_manager()
         self._init_threading()
         self._init_consumers()
+        self._init_zmq_test_client()
 
     def do_something(self) -> None:
         self._kafka_manager.send_message(
@@ -71,7 +73,6 @@ class ExampleManager(IExampleManager):
         TOPIC_COLORS = {
             ConstStrings.EXAMPLE_TOPIC: ConstColors.CYAN,
             ConstStrings.ANOTHER_TOPIC: ConstColors.MAGENTA,
-            ConstStrings.BROADCAST_TOPIC: ConstColors.YELLOW if hasattr(ConstStrings, "BROADCAST_TOPIC") else ConstColors.BLUE,
         }
 
         topic_color = TOPIC_COLORS.get(topic, ConstColors.CYAN)
@@ -88,3 +89,58 @@ class ExampleManager(IExampleManager):
             f"{colored_topic} {colored_msg}"
         )
 
+    def _init_zmq_test_client(self) -> None:
+        self._zmq_client_thread = threading.Thread(
+            target=self._send_zmq_test_messages,
+            daemon=True,
+        )
+        self._zmq_client_thread.start()
+
+    def _send_zmq_test_messages(self) -> None:
+        context = zmq.Context.instance()
+        socket = context.socket(zmq.REQ)
+        socket.connect("tcp://127.0.0.1:5555")
+
+        socket.RCVTIMEO = 2000
+
+        counter = 0
+        while True:
+            try:
+                time.sleep(1) 
+
+                message_text = f"Hello from internal ZMQ client #{counter}"
+                counter += 1
+
+                request = {
+                    ConstStrings.RESOURCE_IDENTIFIER: ConstStrings.EXAMPLE_RESOURCE,
+                    ConstStrings.OPERATION_IDENTIFIER: ConstStrings.EXAMPLE_OPERATION,
+                    ConstStrings.DATA_IDENTIFIER: {
+                        "topic": ConstStrings.EXAMPLE_TOPIC,
+                        "message": message_text,
+                    }
+                }
+
+                self._logger.log(
+                    ConstStrings.LOG_NAME_DEBUG,
+                    f"Sending ZMQ request: {request}"
+                )
+
+                socket.send_json(request)
+
+                try:
+                    response = socket.recv_json()
+                    self._logger.log(
+                        ConstStrings.LOG_NAME_DEBUG,
+                        f"Received ZMQ response: {response}"
+                    )
+                except zmq.Again:
+                    self._logger.log(
+                        ConstStrings.LOG_NAME_DEBUG,
+                        "ZMQ client: recv timeout, no reply from server"
+                    )
+
+            except Exception as e:
+                self._logger.log(
+                    ConstStrings.LOG_NAME_DEBUG,
+                    f"ZMQ client thread error: {e}"
+                )

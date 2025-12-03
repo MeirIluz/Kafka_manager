@@ -47,14 +47,42 @@ class ZmqServerManager(IZmqServerManager):
     def _server_working_handle(self) -> None:
         while self._is_running:
             try:
+                # Block until we get a request
                 request_json = self._socket.recv_json()
-                request = Request.from_json(request_json)
+                self._logger.log(
+                    ConstStrings.LOG_NAME_DEBUG,
+                    f"ZMQ server: received request {request_json}"
+                )
+
+                try:
+                    # Parse + route
+                    request = Request.from_json(request_json)
+                    response = self._handle_request(request)
+                except Exception as e:
+                    # If router/controller blows up, still send an error response
+                    self._logger.log(
+                        ConstStrings.LOG_NAME_DEBUG,
+                        f"ZMQ server error while handling request: {e}"
+                    )
+                    response = Response(
+                        status=ResponseStatus.ERROR,
+                        data={ConstStrings.ERROR_MESSAGE: str(e)},
+                    )
+
+                # Always try to reply so REQ can continue
+                self._socket.send_json(response.to_json())
+
             except zmq.Again:
+                # Only relevant if you set a recv timeout / NOBLOCK
                 time.sleep(Consts.ZMQ_SERVER_LOOP_DURATION)
                 continue
 
-            response = self._handle_request(request)
-            self._socket.send_json(response.to_json())
+            except Exception as e:
+                self._logger.log(
+                    ConstStrings.LOG_NAME_DEBUG,
+                    f"ZMQ server socket loop error: {e}"
+                )
+                time.sleep(Consts.ZMQ_SERVER_LOOP_DURATION)
 
     def _handle_request(self, request: Request) -> Response:
         resource = request.resource
