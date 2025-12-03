@@ -71,7 +71,7 @@ class ExampleManager(IExampleManager):
 
     def _produce_topic1_messages(self) -> None:
         while True:
-            time.sleep(Consts.SEND_MESSAGE_DURATION)
+            time.sleep(Consts.SEND_MESSAGE_DURATION * 2)
             self._kafka_manager.send_message(
                 self._topic1,
                 ConstStrings.EXAMPLE_MESSAGE,
