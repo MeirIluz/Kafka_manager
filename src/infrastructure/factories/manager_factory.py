@@ -7,7 +7,9 @@ from infrastructure.factories.api_factory import ApiFactory
 
 
 class ManagerFactory:
-    @staticmethod
+    _kafka_manager = None
+    _zmq_server_manager = None
+
     def _get_config_path() -> str:
         factories_dir = os.path.dirname(os.path.abspath(__file__))
         infra_root = os.path.dirname(factories_dir)
@@ -30,9 +32,16 @@ class ManagerFactory:
     def create_example_zmq_manager() -> IZmqServerManager:
         kafka_manager = ManagerFactory._kafka_manager
         routers = ApiFactory.create_routers(kafka_manager)
-        return InfrastructureFactory.create_zmq_server_manager(routers)
+        zmq_server_manager = InfrastructureFactory.create_zmq_server_manager(
+            routers)
+
+        zmq_server_manager.start()
+
+        ManagerFactory._zmq_server_manager = zmq_server_manager
+        return zmq_server_manager
 
     @staticmethod
     def create_all():
-        ManagerFactory.create_example_manager()
-        ManagerFactory.create_example_zmq_manager()
+        example_manager = ManagerFactory.create_example_manager()
+        zmq_server_manager = ManagerFactory.create_example_zmq_manager()
+        return example_manager, zmq_server_manager

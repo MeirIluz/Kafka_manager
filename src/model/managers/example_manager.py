@@ -1,3 +1,4 @@
+import os
 import time
 import threading
 import json
@@ -97,11 +98,14 @@ class ExampleManager(IExampleManager):
         self._zmq_client_thread.start()
 
     def _create_zmq_socket(self, context: zmq.Context) -> zmq.Socket:
-        socket = context.socket(zmq.REQ)
-        socket.connect("tcp://127.0.0.1:5555")
-        socket.RCVTIMEO = 2000
-        socket.SNDTIMEO = 2000
-        return socket
+            host = os.getenv(ConstStrings.ZMQ_SERVER_HOST, "127.0.0.1")
+            port = os.getenv(ConstStrings.ZMQ_SERVER_PORT, "5555")
+
+            socket = context.socket(zmq.REQ)
+            socket.connect(f"tcp://{host}:{port}")
+            socket.RCVTIMEO = 2000
+            socket.SNDTIMEO = 2000
+            return socket
 
     def _send_zmq_test_messages(self) -> None:
         context = zmq.Context.instance()
@@ -109,7 +113,7 @@ class ExampleManager(IExampleManager):
 
         counter = 0
         while True:
-            time.sleep(1)
+            time.sleep(5)
 
             message_text = f"Hello from internal ZMQ client #{counter}"
             counter += 1
@@ -149,7 +153,7 @@ class ExampleManager(IExampleManager):
                     ConstStrings.LOG_NAME_DEBUG,
                     f"ZMQ client thread error: {e}"
                 )
-                # recreate socket on any ZMQ error
+
                 try:
                     socket.close(0)
                 except Exception:

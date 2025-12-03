@@ -32,9 +32,8 @@ class InfrastructureFactory:
             InfrastructureFactory.event_manager = EventManager()
         return InfrastructureFactory.event_manager
 
-    @staticmethod
-    def create_zmq_server_manager() -> IZmqServerManager:
-        host = os.getenv(ConstStrings.ZMQ_SERVER_HOST) or "127.0.0.1"
-        port = os.getenv(ConstStrings.ZMQ_SERVER_PORT) or "5555"
-        routers = ApiFactory.create_routers()
-        return ZmqServerManager(host, port, routers).start()
+    def create_zmq_server_manager(routers):
+        host = os.getenv(ConstStrings.ZMQ_SERVER_HOST, "127.0.0.1")
+        port = int(os.getenv(ConstStrings.ZMQ_SERVER_PORT, "5555"))
+        return ZmqServerManager(host, port, routers)
+
