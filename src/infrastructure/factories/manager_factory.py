@@ -1,10 +1,8 @@
 import os
 from infrastructure.factories.infrastructure_factory import InfrastructureFactory
-from globals.consts.const_strings import ConstStrings
 from infrastructure.interfaces.iexample_manager import IExampleManager
 from infrastructure.interfaces.izmq_server_manager import IZmqServerManager
 from model.managers.example_manager import ExampleManager
-from infrastructure.interfaces.ilogger_manager import ILoggerManager
 from infrastructure.factories.api_factory import ApiFactory
 
 
