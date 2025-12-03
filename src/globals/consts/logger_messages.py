@@ -1,6 +1,7 @@
 class LoggerMessages:
     # --- Tags ---
     TAG_ZMQ_SERVER = "[ZMQ_SERVER]"
+    TAG_ZMQ_CONTROLLER = "[ZMQ_CONTROLLER]"
     TAG_ZMQ_CLIENT = "[ZMQ_CLIENT]"
     TAG_KAFKA = "[KAFKA]"
     TAG_CONFIG = "[CONFIG]"
@@ -9,6 +10,8 @@ class LoggerMessages:
     DEFAULT_ERROR = "ERROR"
 
     # ZMQ server
+    ZMQ_CONTROLLER_FORWARD_MESSAGE = "Forwarded ZMQ message to Kafka: topic={}, message={}"
+    ZMQ_CONTROLLER_MISSING_FIELD = "Missing 'message' field in incoming ZMQ data"
     ZMQ_SERVER_BOUND_TO_ADDRESS = "ZMQ REP server bound to {}"
     ZMQ_SERVER_STOPPED = "ZMQ REP server stopped"
     ZMQ_SERVER_RECEIVED_RAW_REQUEST = "ZMQ server: received raw request: {}"
