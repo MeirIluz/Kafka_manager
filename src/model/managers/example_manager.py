@@ -39,7 +39,6 @@ class ExampleManager(IExampleManager):
         self._init_zmq_test_client()
 
     def _format_tagged(self, tag: str, color: str, msg: str) -> str:
-        """Prepends a colored [TAG] to the message."""
         return f"{color}{tag}{ConstColors.RESET} {msg}"
 
     def do_something(self) -> None:
@@ -136,7 +135,7 @@ class ExampleManager(IExampleManager):
 
         counter = 0
         while True:
-            time.sleep(1)
+            time.sleep(10)
 
             message_text = f"Hello from internal ZMQ client #{counter}"
             counter += 1
@@ -162,7 +161,6 @@ class ExampleManager(IExampleManager):
             }
 
             try:
-                # log sending
                 self._logger.log(
                     ConstStrings.LOG_NAME_DEBUG,
                     self._format_tagged(
