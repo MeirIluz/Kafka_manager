@@ -1,0 +1,27 @@
+2025-12-07 08:25:30,202 - DEBUG - [36m[📡 ZMQ_CLIENT][0m Generated ZMQ test message: Hello from internal ZMQ client #0
+2025-12-07 08:25:30,203 - DEBUG - [36m[📡 ZMQ_CLIENT][0m Sending ZMQ request: {'resource': 'example_resource', 'operation': 'example_operation', 'data': {'topic': 'example_topic', 'message': 'Hello from internal ZMQ client #0'}}
+2025-12-07 08:25:32,205 - DEBUG - [36m[📡 ZMQ_CLIENT][0m ZMQ client: recv timeout, no reply from server
+2025-12-07 08:25:33,099 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: example_message[0m
+2025-12-07 08:25:33,099 - DEBUG - [35m[📦 KAFKA][0m [35m[another_topic][0m [32m, message is: another_message[0m
+2025-12-07 08:25:33,102 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: example_message[0m
+2025-12-07 08:25:33,103 - DEBUG - [35m[📦 KAFKA][0m [35m[another_topic][0m [32m, message is: another_message[0m
+2025-12-07 08:25:33,104 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: example_message[0m
+2025-12-07 08:25:33,105 - DEBUG - [35m[📦 KAFKA][0m [35m[another_topic][0m [32m, message is: another_message[0m
+2025-12-07 08:25:36,260 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: example_message[0m
+2025-12-07 08:25:36,262 - DEBUG - [35m[📦 KAFKA][0m [35m[another_topic][0m [32m, message is: another_message[0m
+2025-12-07 08:25:40,267 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: example_message[0m
+2025-12-07 08:25:40,268 - DEBUG - [35m[📦 KAFKA][0m [35m[another_topic][0m [32m, message is: another_message[0m
+2025-12-07 08:25:42,206 - DEBUG - [36m[📡 ZMQ_CLIENT][0m Generated ZMQ test message: Hello from internal ZMQ client #1
+2025-12-07 08:25:42,207 - DEBUG - [36m[📡 ZMQ_CLIENT][0m Sending ZMQ request: {'resource': 'example_resource', 'operation': 'example_operation', 'data': {'topic': 'example_topic', 'message': 'Hello from internal ZMQ client #1'}}
+2025-12-07 08:25:44,209 - DEBUG - [36m[📡 ZMQ_CLIENT][0m ZMQ client: recv timeout, no reply from server
+2025-12-07 08:25:44,266 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: example_message[0m
+2025-12-07 08:25:44,269 - DEBUG - [35m[📦 KAFKA][0m [35m[another_topic][0m [32m, message is: another_message[0m
+2025-12-07 08:25:48,277 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: example_message[0m
+2025-12-07 08:25:48,278 - DEBUG - [35m[📦 KAFKA][0m [35m[another_topic][0m [32m, message is: another_message[0m
+2025-12-07 08:25:52,274 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: example_message[0m
+2025-12-07 08:25:52,276 - DEBUG - [35m[📦 KAFKA][0m [35m[another_topic][0m [32m, message is: another_message[0m
+2025-12-07 08:25:54,210 - DEBUG - [36m[📡 ZMQ_CLIENT][0m Generated ZMQ test message: Hello from internal ZMQ client #2
+2025-12-07 08:25:54,211 - DEBUG - [36m[📡 ZMQ_CLIENT][0m Sending ZMQ request: {'resource': 'example_resource', 'operation': 'example_operation', 'data': {'topic': 'example_topic', 'message': 'Hello from internal ZMQ client #2'}}
+2025-12-07 08:25:56,213 - DEBUG - [36m[📡 ZMQ_CLIENT][0m ZMQ client: recv timeout, no reply from server
+2025-12-07 08:25:56,278 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: example_message[0m
+2025-12-07 08:25:56,281 - DEBUG - [35m[📦 KAFKA][0m [35m[another_topic][0m [32m, message is: another_message[0m

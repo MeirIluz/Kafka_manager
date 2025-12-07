@@ -140,7 +140,6 @@ class ExampleManager(IExampleManager):
             message_text = f"Hello from internal ZMQ client #{counter}"
             counter += 1
 
-            # log generated test message
             self._logger.log(
                 ConstStrings.LOG_NAME_DEBUG,
                 self._format_tagged(

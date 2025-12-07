@@ -32,7 +32,6 @@ class ZmqServerManager(IZmqServerManager):
         self._include_routers(routers)
 
     def _format_tagged(self, msg: str) -> str:
-        """Prepends colored [ZMQ_SERVER] tag to message."""
         return f"{self._TAG_COLOR}{self._TAG}{ConstColors.RESET} {msg}"
 
     def start(self) -> None:
