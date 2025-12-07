@@ -6,3 +6,4 @@ class ConstColors:
     BLUE = "\033[34m"
     MAGENTA = "\033[35m"
     CYAN = "\033[36m"
+    BRIGHT_GREEN = "\033[92m"

@@ -95,7 +95,7 @@ class ExampleManager(IExampleManager):
 
         colored_topic = f"{topic_color}[{topic}]{ConstColors.RESET}"
         colored_msg = (
-            f"{ConstColors.GREEN}"
+            f"{ConstColors.BRIGHT_GREEN}"
             f"{LoggerMessages.EXAMPLE_PRINT_CONSUMER_MSG.format(msg)}"
             f"{ConstColors.RESET}"
         )

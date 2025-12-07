@@ -1,0 +1,69 @@
+2025-12-07 09:15:53,710 - DEBUG - [33m[🛰️ ZMQ_SERVER][0m ZMQ REP server bound to tcp://127.0.0.1:5555
+2025-12-07 09:16:03,709 - DEBUG - [36m[📡 ZMQ_CLIENT][0m Generated ZMQ test message: Hello from internal ZMQ client #0
+2025-12-07 09:16:03,710 - DEBUG - [36m[📡 ZMQ_CLIENT][0m Sending ZMQ request: {'resource': 'example_resource', 'operation': 'example_operation', 'data': {'topic': 'example_topic', 'message': 'Hello from internal ZMQ client #0'}}
+2025-12-07 09:16:03,711 - DEBUG - [33m[🛰️ ZMQ_SERVER][0m ZMQ server: received raw request: {'resource': 'example_resource', 'operation': 'example_operation', 'data': {'topic': 'example_topic', 'message': 'Hello from internal ZMQ client #0'}}
+2025-12-07 09:16:03,711 - DEBUG - [33m[🛰️ ZMQ_SERVER][0m ZMQ server: handling resource='example_resource', operation='example_operation', data={'topic': 'example_topic', 'message': 'Hello from internal ZMQ client #0'}
+2025-12-07 09:16:03,715 - DEBUG - [31m[🧠 ZMQ_CONTROLLER][0m Forwarded ZMQ message to Kafka: topic=example_topic, message=[ZMQ] Hello from internal ZMQ client #0
+2025-12-07 09:16:03,715 - DEBUG - [33m[🛰️ ZMQ_SERVER][0m ZMQ server: sent response: {"status": "SUCCESS", "data": {"sent": true, "topic": "example_topic", "message": "[ZMQ] Hello from internal ZMQ client #0"}}
+2025-12-07 09:16:03,715 - DEBUG - [36m[📡 ZMQ_CLIENT][0m Received ZMQ response: {"status": "SUCCESS", "data": {"sent": true, "topic": "example_topic", "message": "[ZMQ] Hello from internal ZMQ client #0"}}
+2025-12-07 09:16:06,629 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: example_message[0m
+2025-12-07 09:16:06,629 - DEBUG - [35m[📦 KAFKA][0m [35m[another_topic][0m [32m, message is: another_message[0m
+2025-12-07 09:16:06,632 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: example_message[0m
+2025-12-07 09:16:06,633 - DEBUG - [35m[📦 KAFKA][0m [35m[another_topic][0m [32m, message is: another_message[0m
+2025-12-07 09:16:06,635 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: [ZMQ] Hello from internal ZMQ client #0[0m
+2025-12-07 09:16:06,636 - DEBUG - [35m[📦 KAFKA][0m [35m[another_topic][0m [32m, message is: another_message[0m
+2025-12-07 09:16:06,637 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: example_message[0m
+2025-12-07 09:16:09,806 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: example_message[0m
+2025-12-07 09:16:09,809 - DEBUG - [35m[📦 KAFKA][0m [35m[another_topic][0m [32m, message is: another_message[0m
+2025-12-07 09:16:13,716 - DEBUG - [36m[📡 ZMQ_CLIENT][0m Generated ZMQ test message: Hello from internal ZMQ client #1
+2025-12-07 09:16:13,716 - DEBUG - [36m[📡 ZMQ_CLIENT][0m Sending ZMQ request: {'resource': 'example_resource', 'operation': 'example_operation', 'data': {'topic': 'example_topic', 'message': 'Hello from internal ZMQ client #1'}}
+2025-12-07 09:16:13,717 - DEBUG - [33m[🛰️ ZMQ_SERVER][0m ZMQ server: received raw request: {'resource': 'example_resource', 'operation': 'example_operation', 'data': {'topic': 'example_topic', 'message': 'Hello from internal ZMQ client #1'}}
+2025-12-07 09:16:13,717 - DEBUG - [33m[🛰️ ZMQ_SERVER][0m ZMQ server: handling resource='example_resource', operation='example_operation', data={'topic': 'example_topic', 'message': 'Hello from internal ZMQ client #1'}
+2025-12-07 09:16:13,721 - DEBUG - [31m[🧠 ZMQ_CONTROLLER][0m Forwarded ZMQ message to Kafka: topic=example_topic, message=[ZMQ] Hello from internal ZMQ client #1
+2025-12-07 09:16:13,721 - DEBUG - [33m[🛰️ ZMQ_SERVER][0m ZMQ server: sent response: {"status": "SUCCESS", "data": {"sent": true, "topic": "example_topic", "message": "[ZMQ] Hello from internal ZMQ client #1"}}
+2025-12-07 09:16:13,721 - DEBUG - [36m[📡 ZMQ_CLIENT][0m Received ZMQ response: {"status": "SUCCESS", "data": {"sent": true, "topic": "example_topic", "message": "[ZMQ] Hello from internal ZMQ client #1"}}
+2025-12-07 09:16:13,724 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: [ZMQ] Hello from internal ZMQ client #1[0m
+2025-12-07 09:16:13,813 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: example_message[0m
+2025-12-07 09:16:13,814 - DEBUG - [35m[📦 KAFKA][0m [35m[another_topic][0m [32m, message is: another_message[0m
+2025-12-07 09:16:17,819 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: example_message[0m
+2025-12-07 09:16:17,821 - DEBUG - [35m[📦 KAFKA][0m [35m[another_topic][0m [32m, message is: another_message[0m
+2025-12-07 09:16:21,822 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: example_message[0m
+2025-12-07 09:16:21,822 - DEBUG - [35m[📦 KAFKA][0m [35m[another_topic][0m [32m, message is: another_message[0m
+2025-12-07 09:16:23,721 - DEBUG - [36m[📡 ZMQ_CLIENT][0m Generated ZMQ test message: Hello from internal ZMQ client #2
+2025-12-07 09:16:23,722 - DEBUG - [36m[📡 ZMQ_CLIENT][0m Sending ZMQ request: {'resource': 'example_resource', 'operation': 'example_operation', 'data': {'topic': 'example_topic', 'message': 'Hello from internal ZMQ client #2'}}
+2025-12-07 09:16:23,723 - DEBUG - [33m[🛰️ ZMQ_SERVER][0m ZMQ server: received raw request: {'resource': 'example_resource', 'operation': 'example_operation', 'data': {'topic': 'example_topic', 'message': 'Hello from internal ZMQ client #2'}}
+2025-12-07 09:16:23,723 - DEBUG - [33m[🛰️ ZMQ_SERVER][0m ZMQ server: handling resource='example_resource', operation='example_operation', data={'topic': 'example_topic', 'message': 'Hello from internal ZMQ client #2'}
+2025-12-07 09:16:23,726 - DEBUG - [31m[🧠 ZMQ_CONTROLLER][0m Forwarded ZMQ message to Kafka: topic=example_topic, message=[ZMQ] Hello from internal ZMQ client #2
+2025-12-07 09:16:23,726 - DEBUG - [33m[🛰️ ZMQ_SERVER][0m ZMQ server: sent response: {"status": "SUCCESS", "data": {"sent": true, "topic": "example_topic", "message": "[ZMQ] Hello from internal ZMQ client #2"}}
+2025-12-07 09:16:23,726 - DEBUG - [36m[📡 ZMQ_CLIENT][0m Received ZMQ response: {"status": "SUCCESS", "data": {"sent": true, "topic": "example_topic", "message": "[ZMQ] Hello from internal ZMQ client #2"}}
+2025-12-07 09:16:23,728 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: [ZMQ] Hello from internal ZMQ client #2[0m
+2025-12-07 09:16:25,833 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: example_message[0m
+2025-12-07 09:16:25,835 - DEBUG - [35m[📦 KAFKA][0m [35m[another_topic][0m [32m, message is: another_message[0m
+2025-12-07 09:16:29,839 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: example_message[0m
+2025-12-07 09:16:29,841 - DEBUG - [35m[📦 KAFKA][0m [35m[another_topic][0m [32m, message is: another_message[0m
+2025-12-07 09:16:33,727 - DEBUG - [36m[📡 ZMQ_CLIENT][0m Generated ZMQ test message: Hello from internal ZMQ client #3
+2025-12-07 09:16:33,727 - DEBUG - [36m[📡 ZMQ_CLIENT][0m Sending ZMQ request: {'resource': 'example_resource', 'operation': 'example_operation', 'data': {'topic': 'example_topic', 'message': 'Hello from internal ZMQ client #3'}}
+2025-12-07 09:16:33,728 - DEBUG - [33m[🛰️ ZMQ_SERVER][0m ZMQ server: received raw request: {'resource': 'example_resource', 'operation': 'example_operation', 'data': {'topic': 'example_topic', 'message': 'Hello from internal ZMQ client #3'}}
+2025-12-07 09:16:33,728 - DEBUG - [33m[🛰️ ZMQ_SERVER][0m ZMQ server: handling resource='example_resource', operation='example_operation', data={'topic': 'example_topic', 'message': 'Hello from internal ZMQ client #3'}
+2025-12-07 09:16:33,732 - DEBUG - [31m[🧠 ZMQ_CONTROLLER][0m Forwarded ZMQ message to Kafka: topic=example_topic, message=[ZMQ] Hello from internal ZMQ client #3
+2025-12-07 09:16:33,733 - DEBUG - [33m[🛰️ ZMQ_SERVER][0m ZMQ server: sent response: {"status": "SUCCESS", "data": {"sent": true, "topic": "example_topic", "message": "[ZMQ] Hello from internal ZMQ client #3"}}
+2025-12-07 09:16:33,733 - DEBUG - [36m[📡 ZMQ_CLIENT][0m Received ZMQ response: {"status": "SUCCESS", "data": {"sent": true, "topic": "example_topic", "message": "[ZMQ] Hello from internal ZMQ client #3"}}
+2025-12-07 09:16:33,735 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: [ZMQ] Hello from internal ZMQ client #3[0m
+2025-12-07 09:16:33,843 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: example_message[0m
+2025-12-07 09:16:33,844 - DEBUG - [35m[📦 KAFKA][0m [35m[another_topic][0m [32m, message is: another_message[0m
+2025-12-07 09:16:37,852 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: example_message[0m
+2025-12-07 09:16:37,853 - DEBUG - [35m[📦 KAFKA][0m [35m[another_topic][0m [32m, message is: another_message[0m
+2025-12-07 09:16:41,851 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: example_message[0m
+2025-12-07 09:16:41,851 - DEBUG - [35m[📦 KAFKA][0m [35m[another_topic][0m [32m, message is: another_message[0m
+2025-12-07 09:16:43,733 - DEBUG - [36m[📡 ZMQ_CLIENT][0m Generated ZMQ test message: Hello from internal ZMQ client #4
+2025-12-07 09:16:43,733 - DEBUG - [36m[📡 ZMQ_CLIENT][0m Sending ZMQ request: {'resource': 'example_resource', 'operation': 'example_operation', 'data': {'topic': 'example_topic', 'message': 'Hello from internal ZMQ client #4'}}
+2025-12-07 09:16:43,734 - DEBUG - [33m[🛰️ ZMQ_SERVER][0m ZMQ server: received raw request: {'resource': 'example_resource', 'operation': 'example_operation', 'data': {'topic': 'example_topic', 'message': 'Hello from internal ZMQ client #4'}}
+2025-12-07 09:16:43,734 - DEBUG - [33m[🛰️ ZMQ_SERVER][0m ZMQ server: handling resource='example_resource', operation='example_operation', data={'topic': 'example_topic', 'message': 'Hello from internal ZMQ client #4'}
+2025-12-07 09:16:43,735 - DEBUG - [31m[🧠 ZMQ_CONTROLLER][0m Forwarded ZMQ message to Kafka: topic=example_topic, message=[ZMQ] Hello from internal ZMQ client #4
+2025-12-07 09:16:43,736 - DEBUG - [33m[🛰️ ZMQ_SERVER][0m ZMQ server: sent response: {"status": "SUCCESS", "data": {"sent": true, "topic": "example_topic", "message": "[ZMQ] Hello from internal ZMQ client #4"}}
+2025-12-07 09:16:43,736 - DEBUG - [36m[📡 ZMQ_CLIENT][0m Received ZMQ response: {"status": "SUCCESS", "data": {"sent": true, "topic": "example_topic", "message": "[ZMQ] Hello from internal ZMQ client #4"}}
+2025-12-07 09:16:43,738 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: [ZMQ] Hello from internal ZMQ client #4[0m
+2025-12-07 09:16:45,853 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: example_message[0m
+2025-12-07 09:16:45,853 - DEBUG - [35m[📦 KAFKA][0m [35m[another_topic][0m [32m, message is: another_message[0m
+2025-12-07 09:16:49,856 - DEBUG - [35m[📦 KAFKA][0m [36m[example_topic][0m [32m, message is: example_message[0m
+2025-12-07 09:16:49,857 - DEBUG - [35m[📦 KAFKA][0m [35m[another_topic][0m [32m, message is: another_message[0m
