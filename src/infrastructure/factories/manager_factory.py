@@ -35,6 +35,7 @@ class ManagerFactory:
         zmq_server_manager = InfrastructureFactory.create_zmq_server_manager(
             routers)
 
+
         zmq_server_manager.start()
 
         ManagerFactory._zmq_server_manager = zmq_server_manager
