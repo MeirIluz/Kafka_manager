@@ -33,7 +33,7 @@ class InfrastructureFactory:
         return InfrastructureFactory.event_manager
 
     def create_zmq_server_manager(routers):
-        host = os.getenv(ConstStrings.ZMQ_SERVER_HOST, "127.0.0.1")
+        host = os.getenv(ConstStrings.ZMQ_SERVER_HOST, "0.0.0.1")
         port = int(os.getenv(ConstStrings.ZMQ_SERVER_PORT, "5555"))
         return ZmqServerManager(host, port, routers)
 

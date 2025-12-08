@@ -119,7 +119,7 @@ class ExampleManager(IExampleManager):
         self._zmq_client_thread.start()
 
     def _create_zmq_socket(self, context: zmq.Context) -> zmq.Socket:
-        host = os.getenv(ConstStrings.ZMQ_SERVER_HOST, "127.0.0.1")
+        host = os.getenv(ConstStrings.ZMQ_SERVER_HOST, "0.0.0.1")
         port = os.getenv(ConstStrings.ZMQ_SERVER_PORT, "5555")
 
         socket = context.socket(zmq.REQ)
