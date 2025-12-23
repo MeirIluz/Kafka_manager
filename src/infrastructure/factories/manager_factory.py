@@ -43,5 +43,11 @@ class ManagerFactory:
 
     @staticmethod
     def create_all():
+        mode = os.getenv("APP_MODE", "all").strip().lower()
+
+        # This creates KafkaManager + ExampleManager (ExampleManager decides what to start)
         ManagerFactory.create_example_manager()
-        ManagerFactory.create_example_zmq_manager()
+
+        # Only producer/all should run the ZMQ server
+        if mode in ("producer", "all"):
+            ManagerFactory.create_example_zmq_manager()
