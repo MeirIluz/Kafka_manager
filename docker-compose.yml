@@ -25,30 +25,37 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
     healthcheck:
-      test:
-        [
-          "CMD",
-          "bash",
-          "-c",
-          "kafka-topics --bootstrap-server kafka:9092 --list || exit 1",
-        ]
+      test: ["CMD", "bash", "-c", "kafka-topics --bootstrap-server kafka:9092 --list || exit 1"]
       interval: 5s
       timeout: 5s
       retries: 10
     volumes:
       - kafka-data:/var/lib/kafka/data
 
-  app:
+  producer:
     build: .
-    container_name: kafka_example_app
+    container_name: kafka_producer_app
     depends_on:
       kafka:
         condition: service_healthy
     environment:
+      APP_MODE: producer
       ZMQ_SERVER_HOST: ${ZMQ_SERVER_HOST}
       ZMQ_SERVER_PORT: ${ZMQ_SERVER_PORT}
     ports:
       - "${ZMQ_SERVER_PORT}:${ZMQ_SERVER_PORT}"
+    volumes:
+      - .:/app
+    command: ["python", "src/main.py"]
+
+  consumer:
+    build: .
+    container_name: kafka_consumer_app
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      APP_MODE: consumer
     volumes:
       - .:/app
     command: ["python", "src/main.py"]
