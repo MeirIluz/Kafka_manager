@@ -34,10 +34,18 @@ class ExampleManager(IExampleManager):
 
         self._logger = LoggerFactory.get_logger_manager()
 
-        self._init_threading()
-        self._init_consumers()
-        self._init_zmq_test_client()
+        mode = os.getenv("APP_MODE", "all").strip().lower()
 
+        if mode in ("producer", "all"):
+            self._init_threading()
+
+        if mode in ("consumer", "all"):
+            self._init_consumers()
+
+        # Internal ZMQ test client only makes sense when ZMQ server exists (producer/all)
+        if mode in ("producer", "all"):
+            self._init_zmq_test_client()
+            
     def _format_tagged(self, tag: str, color: str, msg: str) -> str:
         return f"{color}{tag}{ConstColors.RESET} {msg}"
 
@@ -60,12 +68,7 @@ class ExampleManager(IExampleManager):
 
     def _init_consumers(self) -> None:
         self._kafka_manager.start_consuming(
-            self._topic1,
-            self._print_consumer,
-        )
-
-        self._kafka_manager.start_consuming(
-            self._topic2,
+            [self._topic1, self._topic2],
             self._print_consumer,
         )
 
