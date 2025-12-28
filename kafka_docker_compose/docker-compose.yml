@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   zookeeper:
     image: ${ZOOKEEPER_IMAGE}
@@ -9,6 +7,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     ports:
       - "${ZOOKEEPER_PORT}:${ZOOKEEPER_PORT}"
+    restart: always
 
   kafka:
     image: ${KAFKA_IMAGE}
@@ -17,48 +16,63 @@ services:
       - zookeeper
     ports:
       - "${KAFKA_PORT}:${KAFKA_PORT}"
+      - "${KAFKA_HOST_PORT}:${KAFKA_HOST_PORT}"
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:${ZOOKEEPER_PORT}
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:${KAFKA_PORT}
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:${ZOOKEEPER_PORT}"
+
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka:${KAFKA_PORT},PLAINTEXT_HOST://localhost:${KAFKA_HOST_PORT}"
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT"
+      KAFKA_INTER_BROKER_LISTENER_NAME: "PLAINTEXT"
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_LISTENERS: "PLAINTEXT://0.0.0.0:${KAFKA_PORT},PLAINTEXT_HOST://0.0.0.0:${KAFKA_HOST_PORT}"
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
     healthcheck:
       test: ["CMD", "bash", "-c", "kafka-topics --bootstrap-server kafka:9092 --list || exit 1"]
       interval: 5s
       timeout: 5s
-      retries: 10
-    volumes:
-      - kafka-data:/var/lib/kafka/data
+      retries: 15
+    restart: always
 
-  producer:
-    build: .
-    container_name: kafka_producer_app
+  kafka_producer_service:
+    build:
+      context: ../kafka_producer_service
+    image: kafka_producer_service:0.1.0
+    container_name: kafka_producer_service
     depends_on:
       kafka:
         condition: service_healthy
-    environment:
-      APP_MODE: producer
-      ZMQ_SERVER_HOST: ${ZMQ_SERVER_HOST}
-      ZMQ_SERVER_PORT: ${ZMQ_SERVER_PORT}
-    ports:
-      - "${ZMQ_SERVER_PORT}:${ZMQ_SERVER_PORT}"
     volumes:
-      - .:/app
-    command: ["python", "src/main.py"]
+      - ./configuration.xml:${CONFIG_PATH}
+    environment:
+      - CONFIG_PATH=${CONFIG_PATH}
+      - KAFKA_BOOTSTRAP_SERVERS=${KAFKA_BOOTSTRAP_SERVERS}
 
-  consumer:
-    build: .
-    container_name: kafka_consumer_app
+      - ZMQ_SERVER_HOST=${ZMQ_SERVER_HOST}
+      - ZMQ_SERVER_PORT=${ZMQ_SERVER_PORT}
+
+      - TZ=${TZ}
+    restart: always
+    command: /bin/sh -c "sleep 3 && python src/main.py"
+    tty: true
+    stdin_open: true
+
+  kafka_consumer_service:
+    build:
+      context: ../kafka_consumer_service
+    image: kafka_consumer_service:0.1.0
+    container_name: kafka_consumer_service
     depends_on:
       kafka:
         condition: service_healthy
-    environment:
-      APP_MODE: consumer
     volumes:
-      - .:/app
-    command: ["python", "src/main.py"]
-
-volumes:
-  kafka-data:
+      - ./configuration.xml:${CONFIG_PATH}
+    environment:
+      - CONFIG_PATH=${CONFIG_PATH}
+      - KAFKA_BOOTSTRAP_SERVERS=${KAFKA_BOOTSTRAP_SERVERS}
+      - KAFKA_GROUP_ID=${KAFKA_GROUP_ID}
+      - TZ=${TZ}
+    restart: always
+    command: /bin/sh -c "sleep 3 && python src/main.py"
+    tty: true
+    stdin_open: true

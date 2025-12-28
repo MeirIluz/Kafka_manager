@@ -4,7 +4,7 @@ from infrastructure.factories.infrastructure_factory import InfrastructureFactor
 from infrastructure.interfaces.iconfig_manager import IConfigManager
 from infrastructure.interfaces.ikafka_manager import IKafkaManager
 from infrastructure.interfaces.iexample_manager import IExampleManager
-from kafka_consumer_service.src.globals.consts.const_strings import ConstStrings
+from globals.consts.const_strings import ConstStrings
 from model.managers.example_manager import ExampleManager
 
 

@@ -25,8 +25,8 @@ class ManagerFactory:
 
     @staticmethod
     def create_zmq_client_manager() -> IZmqClientManager:
-        host = os.getenv(ConstStrings.zmq_server_host)
-        port = os.getenv(ConstStrings.zmq_server_port)
+        host = os.getenv(ConstStrings.ZMQ_SERVER_HOST)
+        port = os.getenv(ConstStrings.ZMQ_SERVER_PORT)
         return ZmqClientManager(host, port)
     
     @staticmethod

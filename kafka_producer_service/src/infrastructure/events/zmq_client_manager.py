@@ -3,7 +3,7 @@ import zmq
 from globals.enums.response_status import ResponseStatus
 from globals.consts.const_strings import ConstStrings
 from infrastructure.interfaces.izmq_client_manager import IZmqClientManager
-from kafka_consumer_service.src.globals.consts.logger_messages import LoggerMessages
+from globals.consts.logger_messages import LoggerMessages
 from model.data_classes.zmq_request import Request
 from model.data_classes.zmq_response import Response
 
@@ -46,29 +46,29 @@ class ZmqClientManager(IZmqClientManager):
         finally:
             self._socket = None
 
-def send_request(self, request: Request) -> Response:
-    try:
-        self._socket.send_json(request.to_json())
-        response = self._socket.recv_json()
-        return Response.from_json(response)
+    def send_request(self, request: Request) -> Response:
+        try:
+            self._socket.send_json(request.to_json())
+            response = self._socket.recv_json()
+            return Response.from_json(response)
 
-    except zmq.Again:
-        self._logger.log(
-            ConstStrings.LOG_NAME_DEBUG,
-            LoggerMessages.ZMQ_CLIENT_RECV_TIMEOUT,
-        )
-        return Response(
-            status=ResponseStatus.TIMEOUT,
-            data={}
-        )
+        except zmq.Again:
+            self._logger.log(
+                ConstStrings.LOG_NAME_DEBUG,
+                LoggerMessages.ZMQ_CLIENT_RECV_TIMEOUT,
+            )
+            return Response(
+                status=ResponseStatus.TIMEOUT,
+                data={}
+            )
 
-    except Exception as e:
-        self._logger.log(
-            ConstStrings.LOG_NAME_DEBUG,
-            LoggerMessages.ZMQ_CLIENT_THREAD_ERROR.format(str(e)),
-        )
-        return Response(
-            status=ResponseStatus.ERROR,
-            data={ConstStrings.ERROR_MESSAGE: str(e)}
-        )
+        except Exception as e:
+            self._logger.log(
+                ConstStrings.LOG_NAME_DEBUG,
+                LoggerMessages.ZMQ_CLIENT_THREAD_ERROR.format(str(e)),
+            )
+            return Response(
+                status=ResponseStatus.ERROR,
+                data={ConstStrings.ERROR_MESSAGE: str(e)}
+            )
 

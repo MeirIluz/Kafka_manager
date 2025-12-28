@@ -14,7 +14,7 @@ from globals.consts.consts import Consts
 from globals.consts.logger_messages import LoggerMessages
 from globals.consts.const_colors import ConstColors
 from infrastructure.factories.logger_factory import LoggerFactory
-from src.test_modules.debug_print import DEBUG_PRINT
+from test_modules.debug_print import DEBUG_PRINT
 
 
 class ExampleManager(IExampleManager):
