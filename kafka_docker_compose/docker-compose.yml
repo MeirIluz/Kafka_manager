@@ -55,8 +55,6 @@ services:
       - TZ=${TZ}
     restart: always
     command: /bin/sh -c "sleep 3 && python src/main.py"
-    tty: true
-    stdin_open: true
 
   kafka_consumer_service:
     build:
@@ -76,5 +74,3 @@ services:
       - TZ=${TZ}
     restart: always
     command: /bin/sh -c "sleep 3 && python src/main.py"
-    tty: true
-    stdin_open: true

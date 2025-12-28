@@ -1,0 +1,2 @@
+2025-12-28 17:17:58,548 - DEBUG - [📦 KAFKA] [example_topic] , message is: [ZMQ] Hello from internal ZMQ client #0
+2025-12-28 17:18:08,549 - DEBUG - [📦 KAFKA] [example_topic] , message is: [ZMQ] Hello from internal ZMQ client #1
