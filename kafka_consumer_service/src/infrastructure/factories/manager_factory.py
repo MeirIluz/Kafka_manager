@@ -8,7 +8,7 @@ from kafka_consumer_service.src.globals.consts.const_strings import ConstStrings
 from model.managers.example_manager import ExampleManager
 
 
-class Factory:
+class ManagerFactory:
     @staticmethod
     def create_config_manager(config_path: str) -> IConfigManager:
         return InfrastructureFactory.create_config_manager(config_path)
@@ -27,6 +27,6 @@ class Factory:
     @staticmethod
     def create_all() -> IExampleManager:
 
-        config_manager = Factory.create_config_manager(ConstStrings.GLOBAL_CONFIG_PATH)
-        kafka_manager = Factory.create_kafka_manager(config_manager)
-        return Factory.create_example_manager(config_manager, kafka_manager)
+        config_manager = ManagerFactory.create_config_manager(ConstStrings.GLOBAL_CONFIG_PATH)
+        kafka_manager = ManagerFactory.create_kafka_manager(config_manager)
+        return ManagerFactory.create_example_manager(config_manager, kafka_manager)
