@@ -1,3 +1,6 @@
+from typing import List
+
+from infrastructure.interfaces.iapi_router import IApiRouter
 from infrastructure.interfaces.ikafka_manager import IKafkaManager
 from infrastructure.events.kafka_manager import KafkaManager
 
@@ -10,6 +13,8 @@ from infrastructure.interfaces.iconfig_manager import IConfigManager
 from infrastructure.interfaces.izmq_client_manager import IZmqClientManager
 from infrastructure.events.zmq_client_manager import ZmqClientManager
 
+from infrastructure.interfaces.izmq_server_manager import IZmqServerManager
+from infrastructure.events.zmq_server_manager import ZmqServerManager
 
 class InfrastructureFactory:
     _event_manager: IEventManager = None
@@ -31,3 +36,7 @@ class InfrastructureFactory:
     @staticmethod
     def create_zmq_client_manager(host: str, port: str) -> IZmqClientManager:
         return ZmqClientManager(host, int(port))
+    
+    @staticmethod
+    def create_zmq_server_manager(host: str, port: str, routers: List[IApiRouter]) -> IZmqServerManager:
+        return ZmqServerManager(host, int(port), routers)

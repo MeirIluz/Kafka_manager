@@ -24,11 +24,19 @@ class ManagerFactory:
         return InfrastructureFactory.create_kafka_manager(config_manager)
 
     @staticmethod
+    def create_zmq_server_manager(kafka_manager: IKafkaManager) -> IZmqServerManager:
+        host = os.getenv(ConstStrings.ZMQ_SERVER_HOST, "0.0.0.0")
+        port = os.getenv(ConstStrings.ZMQ_SERVER_PORT, "5555")
+
+        routers = ApiFactory.create_routers(kafka_manager)
+        return InfrastructureFactory.create_zmq_server_manager(host, port, routers)
+
+    @staticmethod
     def create_zmq_client_manager() -> IZmqClientManager:
-        host = os.getenv(ConstStrings.ZMQ_SERVER_HOST)
-        port = os.getenv(ConstStrings.ZMQ_SERVER_PORT)
-        return ZmqClientManager(host, port)
-    
+        host = os.getenv(ConstStrings.ZMQ_SERVER_HOST, "127.0.0.1")
+        port = os.getenv(ConstStrings.ZMQ_SERVER_PORT, "5555")
+        return ZmqClientManager(host, int(port))
+
     @staticmethod
     def create_example_manager(
         config_manager: IConfigManager,
@@ -36,7 +44,7 @@ class ManagerFactory:
         zmq_client_manager: IZmqClientManager,
     ) -> IExampleManager:
         return ExampleManager(config_manager, kafka_manager, zmq_client_manager)
-
+    
     @staticmethod
     def create_all() -> IExampleManager:
         config_path = os.getenv("CONFIG_PATH", ConstStrings.GLOBAL_CONFIG_PATH)
@@ -44,7 +52,13 @@ class ManagerFactory:
         config_manager = ManagerFactory.create_config_manager(config_path)
         kafka_manager = ManagerFactory.create_kafka_manager(config_manager)
 
+        zmq_server_manager = ManagerFactory.create_zmq_server_manager(kafka_manager)
+        zmq_server_manager.start()
+
         zmq_client_manager = ManagerFactory.create_zmq_client_manager()
         zmq_client_manager.start()
 
-        return ManagerFactory.create_example_manager(config_manager, kafka_manager, zmq_client_manager)
+        return ManagerFactory.create_example_manager(
+            config_manager, kafka_manager, zmq_client_manager
+        )
+

@@ -30,3 +30,4 @@ class ZmqClientManager(IZmqClientManager):
                 status=ResponseStatus.ERROR,
                 data={ConstStrings.ERROR_MESSAGE: str(e)}
             )
+
