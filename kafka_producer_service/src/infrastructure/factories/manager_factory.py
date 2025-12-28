@@ -1,53 +1,50 @@
 import os
+
 from infrastructure.factories.infrastructure_factory import InfrastructureFactory
-from infrastructure.interfaces.iexample_manager import IExampleManager
-from infrastructure.interfaces.izmq_server_manager import IZmqServerManager
-from model.managers.example_manager import ExampleManager
 from infrastructure.factories.api_factory import ApiFactory
+
+from infrastructure.interfaces.iconfig_manager import IConfigManager
+from infrastructure.interfaces.ikafka_manager import IKafkaManager
+from infrastructure.interfaces.izmq_server_manager import IZmqServerManager
+from infrastructure.interfaces.iexample_manager import IExampleManager
+from infrastructure.interfaces.izmq_client_manager import IZmqClientManager
+from infrastructure.events.zmq_client_manager import ZmqClientManager
+
+from globals.consts.const_strings import ConstStrings
+from model.managers.example_manager import ExampleManager
 
 
 class ManagerFactory:
-    _kafka_manager = None
-    _zmq_server_manager = None
-
-    def _get_config_path() -> str:
-        factories_dir = os.path.dirname(os.path.abspath(__file__))
-        infra_root = os.path.dirname(factories_dir)
-        config_path = os.path.join(infra_root, "config", "configuration.xml")
-        return config_path
+    @staticmethod
+    def create_config_manager(config_path: str) -> IConfigManager:
+        return InfrastructureFactory.create_config_manager(config_path)
 
     @staticmethod
-    def create_example_manager() -> IExampleManager:
-        config_path = ManagerFactory._get_config_path()
-        config_manager = InfrastructureFactory.create_config_manager(
-            config_path)
-
-        kafka_manager = InfrastructureFactory.create_kafka_manager(
-            config_manager)
-        ManagerFactory._kafka_manager = kafka_manager
-
-        return ExampleManager(config_manager, kafka_manager)
+    def create_kafka_manager(config_manager: IConfigManager) -> IKafkaManager:
+        return InfrastructureFactory.create_kafka_manager(config_manager)
 
     @staticmethod
-    def create_example_zmq_manager() -> IZmqServerManager:
-        kafka_manager = ManagerFactory._kafka_manager
-        routers = ApiFactory.create_routers(kafka_manager)
-        zmq_server_manager = InfrastructureFactory.create_zmq_server_manager(
-            routers)
-
-
-        zmq_server_manager.start()
-
-        ManagerFactory._zmq_server_manager = zmq_server_manager
-        return zmq_server_manager
+    def create_zmq_client_manager() -> IZmqClientManager:
+        host = os.getenv(ConstStrings.zmq_server_host)
+        port = os.getenv(ConstStrings.zmq_server_port)
+        return ZmqClientManager(host, port)
+    
+    @staticmethod
+    def create_example_manager(
+        config_manager: IConfigManager,
+        kafka_manager: IKafkaManager,
+        zmq_client_manager: IZmqClientManager,
+    ) -> IExampleManager:
+        return ExampleManager(config_manager, kafka_manager, zmq_client_manager)
 
     @staticmethod
-    def create_all():
-        mode = os.getenv("APP_MODE", "all").strip().lower()
+    def create_all() -> IExampleManager:
+        config_path = os.getenv("CONFIG_PATH", ConstStrings.GLOBAL_CONFIG_PATH)
 
-        # This creates KafkaManager + ExampleManager (ExampleManager decides what to start)
-        ManagerFactory.create_example_manager()
+        config_manager = ManagerFactory.create_config_manager(config_path)
+        kafka_manager = ManagerFactory.create_kafka_manager(config_manager)
 
-        # Only producer/all should run the ZMQ server
-        if mode in ("producer", "all"):
-            ManagerFactory.create_example_zmq_manager()
+        zmq_client_manager = ManagerFactory.create_zmq_client_manager()
+        zmq_client_manager.start()
+
+        return ManagerFactory.create_example_manager(config_manager, kafka_manager, zmq_client_manager)
