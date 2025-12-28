@@ -31,10 +31,8 @@ class KafkaManager(IKafkaManager):
             self._producer.flush()
 
     def start_consuming(self, topics: Iterable[str], callback: Callable) -> None:
-        """
-        Start ONE consumer subscribed to multiple topics.
-        This prevents "2 members" issue and duplicate-looking logs.
-        """
+        # Start ONE consumer subscribed to multiple topics.
+        # This prevents "2 members" issue and duplicate-looking logs.
         if self._consumer_thread is not None:
             self._logger.log(
                 ConstStrings.LOG_NAME_DEBUG,
