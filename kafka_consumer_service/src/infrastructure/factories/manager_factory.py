@@ -25,8 +25,7 @@ class ManagerFactory:
         return ExampleManager(config_manager, kafka_manager)
 
     @staticmethod
-    def create_all() -> IExampleManager:
-
+    def create_all() -> None:
         config_manager = ManagerFactory.create_config_manager(ConstStrings.GLOBAL_CONFIG_PATH)
         kafka_manager = ManagerFactory.create_kafka_manager(config_manager)
-        return ManagerFactory.create_example_manager(config_manager, kafka_manager)
+        ManagerFactory.create_example_manager(config_manager, kafka_manager)

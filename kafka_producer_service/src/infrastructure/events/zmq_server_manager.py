@@ -30,7 +30,7 @@ class ZmqServerManager(IZmqServerManager):
         self._routers_dict: dict[str, IApiRouter] = {}
         self._logger = LoggerFactory.get_logger_manager()
         self._include_routers(routers)
-
+        self.start()
     def _format_tagged(self, msg: str) -> str:
         return f"{self._TAG_COLOR}{self._TAG}{ConstColors.RESET} {msg}"
 

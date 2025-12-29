@@ -35,7 +35,7 @@ class ManagerFactory:
     def create_zmq_client_manager() -> IZmqClientManager:
         host = os.getenv(ConstStrings.ZMQ_SERVER_HOST, "127.0.0.1")
         port = os.getenv(ConstStrings.ZMQ_SERVER_PORT, "5555")
-        return ZmqClientManager(host, int(port))
+        return ZmqClientManager(host, port)
 
     @staticmethod
     def create_example_manager(
@@ -46,19 +46,13 @@ class ManagerFactory:
         return ExampleManager(config_manager, kafka_manager, zmq_client_manager)
     
     @staticmethod
-    def create_all() -> IExampleManager:
-        config_path = os.getenv("CONFIG_PATH", ConstStrings.GLOBAL_CONFIG_PATH)
-
-        config_manager = ManagerFactory.create_config_manager(config_path)
+    def create_all() -> None:
+        config_manager = ManagerFactory.create_config_manager(ConstStrings.GLOBAL_CONFIG_PATH)
         kafka_manager = ManagerFactory.create_kafka_manager(config_manager)
 
-        zmq_server_manager = ManagerFactory.create_zmq_server_manager(kafka_manager)
-        zmq_server_manager.start()
+        ManagerFactory.create_zmq_server_manager(kafka_manager)
 
         zmq_client_manager = ManagerFactory.create_zmq_client_manager()
-        zmq_client_manager.start()
 
-        return ManagerFactory.create_example_manager(
-            config_manager, kafka_manager, zmq_client_manager
-        )
+        ManagerFactory.create_example_manager(config_manager, kafka_manager, zmq_client_manager)
 

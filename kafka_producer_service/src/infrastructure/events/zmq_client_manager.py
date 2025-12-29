@@ -21,6 +21,7 @@ class ZmqClientManager(IZmqClientManager):
 
         self._socket = None
         self._connect()
+        self.start()
 
     def _connect(self) -> None:
         if self._socket is not None:
