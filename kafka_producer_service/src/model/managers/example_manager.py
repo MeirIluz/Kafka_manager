@@ -28,18 +28,15 @@ class ExampleManager(IExampleManager):
 
         self._logger = LoggerFactory.get_logger_manager()
 
-        # start zmq client
         self._zmq_client.start()
         self._logger.log(
             ConstStrings.LOG_NAME_DEBUG,
             f"{ConstColors.CYAN}{LoggerMessages.TAG_ZMQ_CLIENT}{ConstColors.RESET} ZMQ client started",
         )
 
-        # run demo loop
         t = threading.Thread(target=self._demo_loop, daemon=True)
         t.start()
 
-        # keep process alive
         while True:
             time.sleep(60)
 
@@ -60,7 +57,6 @@ class ExampleManager(IExampleManager):
                 f"{LoggerMessages.ZMQ_CLIENT_GENERATED_MESSAGE.format(msg)}",
             )
 
-            # send request via your ZmqClientManager abstraction
             request = {
                 ConstStrings.RESOURCE_IDENTIFIER: ConstStrings.EXAMPLE_RESOURCE,
                 ConstStrings.OPERATION_IDENTIFIER: ConstStrings.EXAMPLE_OPERATION,
@@ -76,7 +72,7 @@ class ExampleManager(IExampleManager):
                 f"{LoggerMessages.ZMQ_CLIENT_SENDING_REQUEST.format(request)}",
             )
 
-            response = self._zmq_client.send_request_from_dict(request)  # see note below
+            response = self._zmq_client.send_request_from_dict(request) 
 
             self._logger.log(
                 ConstStrings.LOG_NAME_DEBUG,
